@@ -11,33 +11,23 @@ public class PhoneNumber {
         this.number = number;
     }
 
-//    public String getNumber() {
-//        return String.format("%s %s", countryCode, number);
-//    }
-//
-//    public void setNumber(String number) {
-//        this.number = String.format("%s %s", this.countryCode, number);
-//    }
-
+    public PhoneNumber(String number) {
+        this.countryCode = "+40";    // default country code
+        this.number = number;
+    }
 
     public String getCountryCode() {
         return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     @Override
     public String toString() {
-        return this.countryCode + " " + this.number;
+        return this.countryCode + "_" + this.number;
     }
 }
+
+

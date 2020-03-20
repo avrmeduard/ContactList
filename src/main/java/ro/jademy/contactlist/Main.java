@@ -1,112 +1,236 @@
+
 package ro.jademy.contactlist;
 
 import ro.jademy.contactlist.model.Address;
 import ro.jademy.contactlist.model.Company;
 import ro.jademy.contactlist.model.PhoneNumber;
 import ro.jademy.contactlist.model.User;
+import ro.jademy.contactlist.service.FileUserService;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class Main {
 
+    private static Scanner scanner = new Scanner(System.in);
+//    private static MemoryUserService memoryUserService = new MemoryUserService();
+//    private static FileUserService fileUserService = new FileUserService("mobileDataBase.txt");
+
+    private static List<User> contacts = new ArrayList<>();
+    private static Menu menu;
+
+
+
     public static void main(String[] args) {
 
 
-        // create a contact list of users
+        Menu menu = new Menu();
 
-        User user1     =    new User("Dwayne", "Mitch", "dwayneMitch@msn.com", 22, new HashMap<>(),
-                                     "Web Designer", false);
+//        menu.startPhone();
+//        menu.printMenu();
+//        menu.printActionMenu(scanner.nextInt());
 
-        user1.setAddress(new Address("15 Washington", 27, 13, "first",
-                                     "CA 80474","San Francisco", "United States"));
-        user1.setCompany(new Company("Big Drop Inc, Web Design and Developer Company", new Address("Montgomery St",
-                                     8, 1, "9th", "CA 94011",
-                                     "San Francisco", "United States")));
+        FileUserService fileUserService = new FileUserService("contactsFile.txt");
+        HashMap<String, PhoneNumber> ph = new HashMap<>();
+        ph.put("home",new PhoneNumber ("07", "676655544"));
 
-        user1.getPhoneNumbers().put("mobil", new PhoneNumber("01", "415-775-6643"));
-        user1.getPhoneNumbers().put("work", new PhoneNumber("01", "225-211-1661"));
-
-
-
-
-        User user2     =    new User("Bruce", "Tyron", "brucetyron@aol.org", 33, new HashMap<>(),
-                                     "Barber", false);
-        user2.setAddress(new Address("T15 John Eliot", 15, 723, "5th",
-                                     "CA 45574","San Diego", "United States"));
-        user2.setCompany(new Company("Barber's Shop", new Address("Daemon St",
-                                     11, 12, "6th", "LV 22014",
-                                     "San Diego", "United States")));
-
-        user2.getPhoneNumbers().put("mobil", new PhoneNumber("01", "233-008-8423"));
-        user2.getPhoneNumbers().put("work", new PhoneNumber("01", "362-751-4832"));
+        fileUserService.addContact(new User(1,"Noon", "Mitch", "dwayneMitch@msn.com", 22,
+                ph,
+                new Address("15 Washington", 27, 13, "first", "CA 80474", "San Francisco", "United States"),"Web Designer",
+                new Company("Big Drop Inc, Web Design and Developer Company", new Address("Montgomery St", 8, 1, "9th", "CA 94011", "San Francisco", "United States")), false));
 
 
+        HashMap<String, PhoneNumber> pt = new HashMap<>();
+        pt.put("home",new PhoneNumber ("05", "00086755544"));
+        pt.put("work", new PhoneNumber("34","4534554545"));
+
+        fileUserService.addContact(new User(7,"Hugo", "Mitch", "dwayneMitch@msn.com", 22,
+                pt,
+                new Address("16 Washington", 27, 13, "first", "CA 80474", "San Francisco", "United States"),"Web Designer",
+                new Company("Web Design and Developer Company", new Address("Montgomery St", 8, 1, "9th", "CA 94011", "San Francisco", "United States")), false));
 
 
-        User user3     =    new User("Andy", "Kane", "andykane@msn.com", 27, new HashMap<>(),
-                                     "Tailor", false);
-        user3.setAddress(new Address("Edgar Hoover", 30, 56, "second",
-                                     "DC 4936","Washington", "United States"));
-        user3.setCompany(new Company("Tailor's", new Address("Place Northwest",
-                                     11, 12, "6th", "DC 1229",
-                                     "Washington", "United States")));
+        HashMap<String, PhoneNumber> gg = new HashMap<>();
+        gg.put("home",new PhoneNumber ("22", "3096755544"));
+        gg.put("work", new PhoneNumber("01","8888884545"));
 
-        user3.getPhoneNumbers().put("mobil", new PhoneNumber("01", "432-574-0032"));
-        user3.getPhoneNumbers().put("work", new PhoneNumber("01", "115-550-8455"));
+        fileUserService.addContact(new User(109,"Michal", "Antony", "michAnt@msn.com", 44,
+                pt,
+                new Address("136 DC", 47, 13, "second", "DC 80474", "Washington", "United States"),"Fashion Designer",
+                new Company("Nails and CO", new Address("Red St", 8, 1, "6th", "DC 11011", "Washington", "United States")), false));
 
 
+        System.out.println("People searched whit 'Mit' ");
+        fileUserService.search("Michal");
 
-        User user4     =    new User("Bruce", "Andrew", "bruceandrewn@aol.org", 29, new HashMap<>(),
-                                     "Chef", true);
-        user4.setAddress(new Address("T15 John Eliot", 15, 713, "4th",
-                                     "CA 45574","San Diego", "United States"));
-        user4.setCompany(new Company("Burger Twist", new Address("Abraham Lincoln St",
-                                     41, 7, "3th", "LV 71153",
-                                     "San Diego", "United States")));
+        fileUserService.editContact();
 
-        user4.getPhoneNumbers().put("mobil", new PhoneNumber("01", "105-9528-8300"));
-        user4.getPhoneNumbers().put("work", new PhoneNumber("01", "360-177-2722"));
-
-
-        // list contact list in natural order
-
-        List<User> users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-
-
-        // list contact list in natural order
-        users.stream().sorted(Comparator.comparing(User::getFirstName).thenComparing(User::getLastName))
-                .forEach(System.out::println);
-
-
-        // list contact list by a given criteria
-        users.stream().filter((User u1) -> u1.getAge() < 30).forEach(System.out::println);            // .collect(Collectors.groupingBy(user -> user.getAge() < 88)).forEach();
-
-
-        // display a favorites list
-        users.stream().filter(User::isFavorite).forEach(System.out::println);
-
-
-        // search by a given or multiple criteria
-        users.stream()
-                /*.filter(User::)*/
-                .map(user -> user.getAddress().getCity().toLowerCase().startsWith("s"))
-                .forEach(System.out::println);
-
-
-        // display some statistics for the contact list
-
-        /*IntSummaryStatistics ageAverage =*/
-//        users.stream().collect(Collectors.averagingInt(value -> value.getAge()));
-//        System.out.println();
-        IntSummaryStatistics ageSummary = users.stream().collect(Collectors.summarizingInt(User::getAge));
-        System.out.println("Sumary age : " + ageSummary);
 
     }
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+// incercari ...
+
+//        //print of first character
+//        users.stream().flatMap(user -> Stream.of(user.getFirstName().charAt(0))).distinct().sorted(Comparator.naturalOrder()).forEachOrdered(System.out::println);
+
+
+
+// display a favorites list
+//        users.stream().filter(User::isFavorite).forEach(System.out::println);
+//
+//
+//        // search by a given or multiple criteria
+//        users.stream()
+//                /*.filter(User::)*/
+//                .map(user -> user.getAddress().getCity().toLowerCase().startsWith("s"))
+//                .forEach(System.out::println);
+
+
+//        // list contact list in natural order
+//        users.stream()
+//                .sorted(Comparator.naturalOrder())
+//                /*.sorted(Comparator.comparing(User::getFirstName).thenComparing(User::getLastName))*/
+//                .forEach(System.out::println);
+//
+//
+//        // list contact list by a given criteria
+//        users.stream().filter((User u1) -> u1.getAge() < 30).forEach(System.out::println);
+//        // .collect(Collectors.groupingBy(user -> user.getAge() < 88)).forEach();
+//
+//
+//        // display a favorites list
+//        users.stream().filter(User::isFavorite).forEach(System.out::println);
+//
+//
+//        // search by a given or multiple criteria
+//        users.stream()
+//                /*.filter(User::)*/
+//                .map(user -> user.getAddress().getCity().toLowerCase().startsWith("s"))
+//                .forEach(System.out::println);
+//
+//
+//        // display some statistics for the contact list
+//
+//        /*IntSummaryStatistics ageAverage =*/
+////        users.stream().collect(Collectors.averagingInt(value -> value.getAge()));
+////        System.out.println();
+//        IntSummaryStatistics ageSummary = users.stream().collect(Collectors.summarizingInt(User::getAge));
+//        System.out.println("Sumary age : " + ageSummary);
+
+
+
+
+
+
+
+//        users.stream().flatMap(user -> Stream.of(user.getFirstName().charAt(0))).sorted(Comparator.naturalOrder()).distinct()
+//                .forEach(u -> {
+//                    for (User user : users) {
+//                        System.out.println(user.getFirstName());
+//                    }
+//                });
+
+//
+//        Map<Character, List<User>> naturalOrder = new TreeMap<>();
+//        users.stream().flatMap(user -> Stream.of(user.getFirstName().charAt(0))).distinct().sorted(Comparator.naturalOrder())
+////                .map((User u) -> u.getFirstName() + " " + u.getLastName())
+//                .forEach(System.out::println);
+
+
+//        List<String> nameList = new ArrayList<>();
+//        for (int i = 0; i < users.size(); i++) {
+//            String name = users.get(i).getFirstName() + " " + users.get(i).getLastName();
+//            nameList.add(i, name);   /* =  */
+//        }
+
+
+
+//
+//        List<String> userLinkedHashSet = users.stream().map(user -> user.getFirstName() + " " + user.getLastName()).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+//        for (String s : userLinkedHashSet) {
+//            System.out.println(s.charAt(0));
+//
+//            if (s.charAt(0) == s.getFirstName().charAt(0)) {
+//                System.out.println("\n------------\n" + s);
+//            }
+
+
+
+
+//
+
+
+//        Map<Character, List<User>> naturalOrder = sd;
+
+//buna
+//        users.stream().map(user -> user.getFirstName() + " " + user.getLastName()).sorted(Comparator.naturalOrder()).forEach(System.out::println);
+
+
+//                .collect(Collectors.groupingBy(/*, TreeMap::new, Collectors.toList()*/) );
+//        System.out.println(naturalOrder.size());
+
+//        System.out.println(users.stream().map(user -> user.getFirstName() + " " + user.getLastName())
+//                        .flatMap()
+
+//        for (Map.Entry<Character, List<User>> character : naturalOrder.entrySet()) {
+//            System.out.println(character + "\n"
+//                                         + users.stream().map(user -> user.getFirstName() + " " + user.getLastName())
+//                                         + "\n---------");
+//        }
+
+//        users.stream().flatMap(user -> Stream.of(user.getFirstName().charAt(0))).distinct().sorted(Comparator.naturalOrder())
+//                .map((User u) -> u.getFirstName() + " " + u.getLastName())
+//                .forEach(System.out::println);
+
+
+//        for (Map.Entry<Character, List<User>> characterListEntry : naturalOrder.entrySet()) {
+//            System.out.println(characterListEntry);
+//        }
+    /*stream()
+                .flatMap(user -> Stream.of(user.getFirstName().charAt(0)))
+                *//*.distinct()*//**//*.sorted(Comparator.naturalOrder())*//*
+                .sorted(Comparator.naturalOrder()).forEach(System.out::print);
+//        for (Map.Entry<Character, List<User>> listEntry : naturalOrder.entrySet()) {
+//            System.out.println(listEntry);*/
+//        }
+//    test    Map<Character, List<String>> map = list.stream().collect(Collectors.groupingBy(d -> d.charAt(0)));
+//    test    Map<Character, List<String>> map = list.stream().collect(Collectors.groupingBy(d->d.charAt(0), LinkedHashMap::new, Collectors.toList()));
+
+
+//        Map<Character, List<User>> naturalOrder = new TreeMap<>();
+//        users.stream().sorted().sorted(Comparator
+//        .comparing(User::getFirstName).thenComparing(User::getLastName))
+//                .collect(Collectors.toList());
+
+
+
+            // eroare exception ....
+
+//            scanner.nextLine();
+//                    if (phoneNumber == null || phoneNumber.length() < 13) {
+//        System.out.println("Please type a valid number");
+//        }
+//        try {
+//        int phoneNo = Integer.parseInt(phoneNumber);
+//        } catch (NumberFormatException nfe) {
+//        System.out.println("Please enter only numbers");
+//        }
+//        }
+//        return firstName + " " + lastName + "\n" + phoneNumber;
+//        }

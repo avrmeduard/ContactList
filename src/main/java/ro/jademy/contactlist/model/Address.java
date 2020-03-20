@@ -2,17 +2,14 @@ package ro.jademy.contactlist.model;
 
 public class Address {
 
-    String streetName;
-    Integer streetNumber;
-    Integer apartmentNumber;
-    String floor;
-    String zipCode;
-    String city;
-    String country;
+    private String streetName;
+    private Integer streetNumber;
+    private Integer apartmentNumber;
+    private String floor;
+    private String zipCode;
+    private String city;
+    private String country;
 
-    public Address(){
-
-    }
 
     public Address(String streetName, Integer streetNumber, Integer apartmentNumber, String floor, String zipCode, String city, String country) {
         this.streetName = streetName;
@@ -24,8 +21,12 @@ public class Address {
         this.country = country;
     }
 
+    public Address(String streetName, Integer streetNumber, String city, String country) {
+        this(streetName, streetNumber,null, null, null, city, country);
+    }
+
     public String getStreetName() {
-        return streetName;
+        return this.streetName;
     }
 
     public void setStreetName(String streetName) {
@@ -82,13 +83,8 @@ public class Address {
 
     @Override
     public String toString() {
-        return "\n             Address : " +
-                "streetName='" + streetName + '\'' +
-                ", streetNumber=" + streetNumber +
-                ", apartmentNumber=" + apartmentNumber +
-                ", floor='" + floor + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'';
+         return this.streetName + "_" + this.streetNumber + "_" + this.apartmentNumber+ "_" +
+                this.floor + "_" + this.zipCode + "_" + this.city + "_" + this.country;
     }
 }
+

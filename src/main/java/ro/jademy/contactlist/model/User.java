@@ -1,9 +1,15 @@
 package ro.jademy.contactlist.model;
 
+
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class User /*implements Comparator<User> */{
+public class User {
 
+    private static final String DEFAULT_PHONE_NUMBER_GROUP = "home";
+
+    private Integer userID;
     private String firstName;
     private String lastName;
     private String email;
@@ -18,108 +24,146 @@ public class User /*implements Comparator<User> */{
     private boolean isFavorite;
 
 
-    public User(String firstName, String lastName, String email, Integer age, Map<String, PhoneNumber> phoneNumbers, String jobTitle, boolean isFavorite) {
+//    public User(String firstName, String lastName, String phoneNumber) {
+//
+//    }
+//
+
+    public User(Integer userID,String firstName, String lastName, String email, Integer age, Map<String, PhoneNumber> phoneNumbers,Address address, String jobTitle, Company company, boolean isFavorite) {
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
         this.phoneNumbers = phoneNumbers;
-        this.address = null;
+        this.address = address;
         this.jobTitle = jobTitle;
-        this.company = null;
+        this.company = company;
         this.isFavorite = isFavorite;
     }
 
-    public String getFirstName() {
-        return firstName;
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public User(Integer userId, String firstName, String lastName, String email, Integer age, Map<String, PhoneNumber> phoneNumbers, Address address, String jobTitle, Company company) {
+        this(userId, firstName, lastName, email, age, phoneNumbers, address, jobTitle, company, false);
     }
 
-    public String getLastName() {
-        return lastName;
+    public User(Integer userID, String firstName, String lastName, PhoneNumber phoneNumber, boolean isFavorite) {
+        this(userID, firstName, lastName, null, null, new HashMap<>(), null, null, null, isFavorite);
+
+        this.phoneNumbers.put(DEFAULT_PHONE_NUMBER_GROUP, phoneNumber); // phone number added to a default group
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public User(Integer userID, String firstName, String lastName, PhoneNumber phoneNumber) { // simple constructor, but require a PhoneNumber object
+        this(userID, firstName, lastName, phoneNumber, false);
     }
 
-    public String getEmail() {
-        return email;
+    public User(Integer userID, String firstName, String lastName, String phoneNumber) {   // simplest constructor, requiring only the minimal necessary information in literal form
+        this(userID, firstName, lastName, new PhoneNumber(phoneNumber), false);
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public Integer getUserID() { return userID; }
 
-    public Integer getAge() {
-        return age;
-    }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+    public String getFirstName() { return firstName; }
 
-    public Map<String, PhoneNumber> getPhoneNumbers() {
-        return phoneNumbers;
-    }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public void setPhoneNumbers(Map<String, PhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
-    }
+    public String getLastName() { return lastName; }
 
-    public Address getAddress() {
-        return address;
-    }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+    public String getEmail() { return email; }
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
+    public Integer getAge() { return age; }
 
-    public Company getCompany() {
-        return company;
-    }
+    public void setAge(Integer age) { this.age = age; }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
+    public Map<String, PhoneNumber> getPhoneNumbers() { return phoneNumbers; }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
+    public void setPhoneNumbers(Map<String, PhoneNumber> phoneNumbers) { this.phoneNumbers = phoneNumbers; }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    public Address getAddress() { return address; }
+
+    public void setAddress(Address address) { this.address = address; }
+
+    public String getJobTitle() { return jobTitle; }
+
+    public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }
+
+    public Company getCompany() { return company; }
+
+    public void setCompany(Company company) { this.company = company; }
+
+    public boolean isFavorite() { return isFavorite; }
+
+    public String getIsFavorite() { return isFavorite ? "Favorite" : "Not favorite"; }
+
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
+
+    @Override
+    public String toString() {
+        return  "\nName : "+ this.firstName + " " +this.lastName +
+                "\nAge : " + this.age +
+                "\nEmail : " + this.email +
+                "\nPhoneNumbers : " + this.phoneNumbers.entrySet().toString().replaceAll("\\[|\\]","").replace("="," ").replace("_","-") +
+                "\nAddress : " + this.address.toString().replace("_",", ") +
+                "\nJobTitle : " + this.jobTitle +
+                "\nCompany : " + this.company.getName() + " | Address : " + this.company.getAddress().toString().replaceAll("_",", ") +
+                "\nFavorites : " + this.isFavorite;
     }
 
 
     @Override
-    public String toString() {
-        return  "\n"+ firstName + " " +lastName +
-                ", email : " + email +
-                ", age " + age +
-                ", phoneNumbers : " + phoneNumbers +
-                ", " + address +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", company=" + company +
-                ", isFavorite=" + isFavorite;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return isFavorite == user.isFavorite &&
+                Objects.equals(userID, user.userID) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(age, user.age) &&
+                Objects.equals(phoneNumbers, user.phoneNumbers) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(jobTitle, user.jobTitle) &&
+                Objects.equals(company, user.company);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, firstName, lastName, email, age, phoneNumbers, address, jobTitle, company, isFavorite);
+    }
+
+    //    @Override
+//    public int compareTo(User o) {
+//        if(lastName.compareTo(o.lastName) == 0) {
+//            return firstName.compareTo(o.firstName);
+//        }
+//        return lastName.compareTo(o.lastName);
+//    }
+
+
+//    public List<User> contactsDetails(List<User> users, String name) {
+//        for (int i = 0; i < users.size(); i++) {
+//            if (users.get(i).getFirstName().contains(name) || users.get(i).getLastName().contains(name)) {
+//                return users.get(i);
+//            }
+//        }
+//    }
+
+
 
 //    public int compare(User o1, User o2) {
 //        return o1.getFirstName().compareTo(o2.getFirstName());
 //    }
 
 
-//        Comparator<User> comparator = (u1, u2) -> u1.getFirstName().compareTo(u2.getFirstName());
 
 }
