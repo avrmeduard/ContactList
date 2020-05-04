@@ -1,0 +1,3 @@
+1|Noon|Mitch|dwayneMitch@msn.com|22|home_07_676655544|15 Washington_27_13_first_CA 80474_San Francisco_United States|Big Drop Inc, Web Design and Developer Company_Montgomery St_8_1_9th_CA 94011_San Francisco_United States|Not favorite
+7|Hugo|Mitch|dwayneMitch@msn.com|22|work_34_4534554545;home_05_00086755544|16 Washington_27_13_first_CA 80474_San Francisco_United States|Web Design and Developer Company_Montgomery St_8_1_9th_CA 94011_San Francisco_United States|Not favorite
+109|Michal|Antony|michAnt@msn.com|44|work_34_4534554545;home_05_00086755544|136 DC_47_13_second_DC 80474_Washington_United States|Nails and CO_Red St_8_1_6th_DC 11011_Washington_United States|Not favorite
