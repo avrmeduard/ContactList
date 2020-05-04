@@ -101,8 +101,6 @@ public class FileUserService implements UserService {
 
 
             contacts.remove(user);
-
-
             // TODO: use setters and update the user
 
             // overwrite the whole list of contacts in the file
