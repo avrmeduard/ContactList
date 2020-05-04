@@ -5,17 +5,11 @@ import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
-public class
-
-
-DBUserService {
+public class DBUserService {
 
 
     // con.setAutoCommit(false)
     // TODO SET auto-commit OFF !!!!!!!!
-
-
-
 
 
     public static void main(String[] args) {
