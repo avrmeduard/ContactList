@@ -1,4 +1,3 @@
-
 package ro.jademy.contactlist.service;
 
 import ro.jademy.contactlist.model.Address;
@@ -16,7 +15,7 @@ public class FileUserService implements UserService {
 
     private Scanner scanner = new Scanner(System.in);
     private File contactsFile;
-    private List<User> contacts = new ArrayList<>();
+    private List <User> contacts = new ArrayList <>();
 
 
     public FileUserService(File contactsFile) {
@@ -39,7 +38,7 @@ public class FileUserService implements UserService {
     }
 
     @Override
-    public Optional<User> getContactById(int userId) {
+    public Optional <User> getContactById(int userId) {
         return contacts.stream().filter(u -> u.getUserID() == userId).findFirst();
     }
 
@@ -53,7 +52,7 @@ public class FileUserService implements UserService {
     }
 
 
-    private User updateUser(String firstName, String lastName, String email, Integer age, Map<String,PhoneNumber> phoneNumber,
+    private User updateUser(String firstName, String lastName, String email, Integer age, Map <String,PhoneNumber> phoneNumber,
                             Address address, String jobTitle, Company company, boolean isFavorite)  {
 
 
@@ -126,12 +125,6 @@ public class FileUserService implements UserService {
 
 
 
-
-
-
-
-
-
     @Override
     public void removeContact(int userId) {
         Optional<User> userOpt = getContactById(userId);
@@ -146,31 +139,32 @@ public class FileUserService implements UserService {
     }
 
 
+    /**
+     * type an string as a
+     * @param query and return
+     * @return the result
+     */
+
     @Override
     public List<User> search(String query) {
 
         List<String> result = new ArrayList<>();
-
         String regex = ".*" + query + ".*";
 
         for (String user : contactToString()) {
-
             boolean matches = Pattern.matches(regex, user);
-
             if (matches) {
                 result.add(user);
             }
         }
+        // TODO needs to be return a map of a result
 
         return userList(result);
     }
 
-
-
     // TODO Through contactToString method
     //  we will write it to DATA BASE,
     //  and read it
-
     private List<String> contactToString() {
 
         List<String> userInLine = new ArrayList<>();
@@ -199,8 +193,6 @@ public class FileUserService implements UserService {
         return userInLine;
     }
 
-
-
     private void writeToFile() {
 
         BufferedWriter out = null;
@@ -228,8 +220,6 @@ public class FileUserService implements UserService {
 
         }
     }
-
-
 
     private List<User> userList(List<String> stringList) {
 
@@ -287,6 +277,7 @@ public class FileUserService implements UserService {
     }
 
 
+    // it reads from a
 
     private List<User> readFromFile() {
 
