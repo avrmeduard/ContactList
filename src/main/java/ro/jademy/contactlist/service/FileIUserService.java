@@ -162,22 +162,6 @@ public class FileIUserService implements IUserService, UserEdit {
 
     }
 
-//    private boolean isWord(String word) {
-//        return Pattern.matches("[a-zA-z]+",word);
-//    }
-
-//    private boolean isNumber(String num) {
-//        return Pattern.matches("[0-9]+", num);
-//    }
-//
-//    private boolean isEmail(String email) {
-//        return Pattern.matches("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-]\n" +
-//                "+ )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}$", email);
-//    }
-
-
-
-
     @Override
     public void removeContact(int userId) {
         Optional<User> userOpt = getContactById(userId);
