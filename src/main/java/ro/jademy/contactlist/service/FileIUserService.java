@@ -1,15 +1,12 @@
 package ro.jademy.contactlist.service;
 
-import ro.jademy.contactlist.model.Address;
-import ro.jademy.contactlist.model.Company;
-import ro.jademy.contactlist.model.PhoneNumber;
-import ro.jademy.contactlist.model.User;
+import ro.jademy.contactlist.model.*;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class FileIUserService implements IUserService {
+public class FileIUserService implements IUserService, UserEdit {
 
     private boolean quit;
 
@@ -126,17 +123,17 @@ public class FileIUserService implements IUserService {
 
                      switch (scanner.nextLine()) {
                          case "first name" :
-                             System.out.print("Edit your contact name : ");
-                             u.setFirstName(scanner.nextLine());
-//                             scanner.nextLine().matches("[a-zA-z]");
-                             break;
                          case "last name" :
+                             editName(scanner.nextLine());
                              break;
-                         case "enamil" :
+                         case "email" :
+                             editEmail(scanner.nextLine());
                              break;
                          case "age" :
+                             editAge(scanner.nextInt());
                              break;
                          case "phone" :
+                             //editPhone(scanner.nextInt());
                              break;
                          case "adress" :
                              break;
@@ -146,6 +143,10 @@ public class FileIUserService implements IUserService {
                              break;
                          case "favorite" :
                              break;
+                         default:
+                             System.out.println("Invalid input.");
+                             // metoda recursiva, se cheama singura
+                             // editContact
 
 
                  }
