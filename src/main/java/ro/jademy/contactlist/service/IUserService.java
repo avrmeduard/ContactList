@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface UserService {
+public interface IUserService {
 
     List<User> getContacts();
 
     Optional<User> getContactById(int userId);
 
     void addContact(User contact);
+
+    void editContact(int userID);
 
     void editContact(int userId, String firstName,
                      String lastName,
@@ -30,17 +32,5 @@ public interface UserService {
 
     List<User> search(String query);
 
-//    List<User> search(String query);
-//
-//
-//    public List<User> getContacts();
-//    public void addContact(User contact);
-//    public User getContact(int userId);
-//    void editContact(User contact);
-//    void editContact(int userId);
-//    void removeContact(User contact);
-//    void removeContact(int userId);
-//
-//    public List<User> search (String query);
 }
 

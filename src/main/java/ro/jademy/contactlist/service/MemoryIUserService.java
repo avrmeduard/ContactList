@@ -7,7 +7,7 @@ import ro.jademy.contactlist.model.User;
 
 import java.util.*;
 
-public class MemoryUserService implements UserService{
+public class MemoryIUserService implements IUserService {
 
     Scanner scanner = new Scanner(System.in);
     private List<User> contacts = new ArrayList<>();
@@ -34,6 +34,11 @@ public class MemoryUserService implements UserService{
     public void addContact(User contact) {
         // add user to contact list
         contacts.add(contact);
+    }
+
+    @Override
+    public void editContact(int userID) {
+
     }
 
     @Override

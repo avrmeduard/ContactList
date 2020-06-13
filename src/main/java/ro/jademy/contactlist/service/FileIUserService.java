@@ -9,36 +9,38 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class FileUserService implements UserService {
+public class FileIUserService implements IUserService {
 
     private boolean quit;
 
     private Scanner scanner = new Scanner(System.in);
     private File contactsFile;
-    private List <User> contacts = new ArrayList <>();
+    private List <User> contacts = new LinkedList <>();
 
 
-    public FileUserService(File contactsFile) {
+    public FileIUserService(File contactsFile) {
         this.contactsFile = contactsFile;
     }
 
-    public FileUserService(String contactsFileName) {
+    public FileIUserService(String contactsFileName) {
         this(new File(contactsFileName));
     }
 
     @Override
     public List<User> getContacts() {
+
         // check if contacts is empty
         if(contacts.isEmpty()) {
             contacts.addAll(readFromFile());
         }
-
         // else return the curent list of contacts
         return contacts;
     }
 
     @Override
     public Optional <User> getContactById(int userId) {
+
+
         return contacts.stream().filter(u -> u.getUserID() == userId).findFirst();
     }
 
@@ -47,9 +49,15 @@ public class FileUserService implements UserService {
         // add user to contact list
         contacts.add(contact);
 
+        // TODO : instead of rewriting hole list,
+        //  we could send it to the end of a list
+        //  hint : use LinkedList or Queue
+        //  ??? READ MORE !
+
         //overwrite the whole list of contacts in the file
         writeToFile();
     }
+
 
 
     private User updateUser(String firstName, String lastName, String email, Integer age, Map <String,PhoneNumber> phoneNumber,
@@ -78,6 +86,9 @@ public class FileUserService implements UserService {
     }
 
 
+    // TODO select user first by ID and rewrite it !!!
+    //  . Use Exeption !!
+
     @Override
     public void editContact(int userId, String firstName, String lastName, String email, Integer age, Map<String,
             PhoneNumber> phoneNumber, Address address, String jobTitle, Company company, boolean isFavorite) {
@@ -89,38 +100,79 @@ public class FileUserService implements UserService {
             User user = userOpt.get();
 
             //TODO
-            // .
-            // ONE METHOD
-            // .
-            // To solve one PROBLEM
-            // .
-            // EDIT CONTACT
-
-
-
+            // .edit contact and replace it whit the old one
 
             contacts.remove(user);
             // TODO: use setters and update the user
-
             // overwrite the whole list of contacts in the file
             writeToFile();
         }
+    }
+
+    public void editContact(int userId) {
+
+        // editezi contact :
+        // gasesti userul dupa user id si il editezi
+
+         Optional<User> userOpt = getContactById(userId);
+
+         if (userOpt.isPresent()) {
+
+
+
+             for (User u : contacts) {
+
+                 if( u.getUserID() == userId ) {
+
+                     switch (scanner.nextLine()) {
+                         case "first name" :
+                             System.out.print("Edit your contact name : ");
+                             u.setFirstName(scanner.nextLine());
+//                             scanner.nextLine().matches("[a-zA-z]");
+                             break;
+                         case "last name" :
+                             break;
+                         case "enamil" :
+                             break;
+                         case "age" :
+                             break;
+                         case "phone" :
+                             break;
+                         case "adress" :
+                             break;
+                         case "job" :
+                             break;
+                         case "company" :
+                             break;
+                         case "favorite" :
+                             break;
+
+
+                 }
+             }
+         }
+         // input scanner -> make switch
+
+
+
+        }
+
+        System.out.println("Contact not found.");
 
     }
 
 //    private boolean isWord(String word) {
-//
 //        return Pattern.matches("[a-zA-z]+",word);
 //    }
 
-    private boolean isNumber(String num) {
-        return Pattern.matches("[0-9]+", num);
-    }
-
-    private boolean isEmail(String email) {
-        return Pattern.matches("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-]\n" +
-                "+ )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}$", email);
-    }
+//    private boolean isNumber(String num) {
+//        return Pattern.matches("[0-9]+", num);
+//    }
+//
+//    private boolean isEmail(String email) {
+//        return Pattern.matches("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-]\n" +
+//                "+ )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}$", email);
+//    }
 
 
 
@@ -145,6 +197,9 @@ public class FileUserService implements UserService {
      * @return the result
      */
 
+
+    // TODO something it is not working well !!!!!!
+
     @Override
     public List<User> search(String query) {
 
@@ -158,7 +213,7 @@ public class FileUserService implements UserService {
             }
         }
         // TODO needs to be return a map of a result
-
+        //  we need a new method to display the result !!!!!
         return userList(result);
     }
 
@@ -193,37 +248,11 @@ public class FileUserService implements UserService {
         return userInLine;
     }
 
-    private void writeToFile() {
 
-        BufferedWriter out = null;
-
-        try {
-
-            // the second parameter append set to false,
-            // will overwrite the file (clear it and write to it again).
-
-            out = new BufferedWriter(new FileWriter(contactsFile, false));
-
-            for (String s : contactToString()) {
-                out.write(s + System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        } finally {
-
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
+    // from a LinkedList of Strings we return a LinkedList of Users
     private List<User> userList(List<String> stringList) {
 
-        List<User> userList = new ArrayList<>();
+        List<User> userList = new LinkedList <>();
 
         for (User u : userList) {
 
@@ -277,11 +306,11 @@ public class FileUserService implements UserService {
     }
 
 
-    // it reads from a
 
+    // it reads from a file and return a LinkedList of Strings.
     private List<User> readFromFile() {
 
-        List<String> stringUsers = new ArrayList<>();
+        List<String> stringUsers = new LinkedList <>();
 
         BufferedReader bf = null;
         try {
@@ -304,6 +333,39 @@ public class FileUserService implements UserService {
 
         return userList(stringUsers);
     }
+
+
+    // we copy data from file and save it
+    private void writeToFile() {
+
+        BufferedWriter out = null;
+
+        try {
+
+            // the second parameter append set to false,
+            // will overwrite the file (clear it and write to it again).
+
+            out = new BufferedWriter(new FileWriter(contactsFile, false));
+
+            for (String s : contactToString()) {
+                out.write(s + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+
 
 
 

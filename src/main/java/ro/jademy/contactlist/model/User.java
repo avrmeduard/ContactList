@@ -106,6 +106,8 @@ public class User {
 
     public void setFavorite(boolean favorite) { isFavorite = favorite; }
 
+
+
     @Override
     public String toString() {
         return  "\nName : "+ this.firstName + " " +this.lastName +
@@ -141,7 +143,7 @@ public class User {
         return Objects.hash(userID, firstName, lastName, email, age, phoneNumbers, address, jobTitle, company, isFavorite);
     }
 
-    //    @Override
+//    @Override
 //    public int compareTo(User o) {
 //        if(lastName.compareTo(o.lastName) == 0) {
 //            return firstName.compareTo(o.firstName);

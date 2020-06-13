@@ -148,7 +148,7 @@ public class Menu {
 
     private static void favoriteContacts(List<User> userList) {
         System.out.println("Favorite contacts : ");
-        userList.stream().filter(u -> u.isFavorite()).map(u-> u.getFirstName() + " " + u.getLastName() ).forEach(System.out::println);
+        userList.stream().filter(User::isFavorite).map(u-> u.getFirstName() + " " + u.getLastName() ).forEach(System.out::println);
         System.out.println("Choose your actions: ");
 
 //        for (int i = 0; i < userList.size(); i++) {
