@@ -82,7 +82,12 @@ public class User {
 
     public Integer getAge() { return age; }
 
-    public void setAge(Integer age) { this.age = age; }
+    public void setAge(Integer age) {
+        if (age < 0 || age > 105) {
+            throw new IllegalArgumentException(Integer.toString(age));
+        }
+        this.age = age;
+    }
 
     public Map<String, PhoneNumber> getPhoneNumbers() { return phoneNumbers; }
 

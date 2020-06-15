@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class FileIUserService implements IUserService, UserEdit {
+public class FileIUserService extends EditUserService implements IUserService{
 
     private boolean quit;
 
@@ -123,25 +123,33 @@ public class FileIUserService implements IUserService, UserEdit {
 
                      switch (scanner.nextLine()) {
                          case "first name" :
+                             u.setFirstName( editName(scanner.nextLine()) );
+                             break;
                          case "last name" :
-                             editName(scanner.nextLine());
+                             u.setFirstName( editName(scanner.nextLine()) );
                              break;
                          case "email" :
-                             editEmail(scanner.nextLine());
+                             u.setEmail( editEmail(scanner.nextLine()) );
                              break;
                          case "age" :
-                             editAge(scanner.nextInt());
+                             u.setAge( editAge(scanner.nextInt()) );
                              break;
                          case "phone" :
-                             //editPhone(scanner.nextInt());
+                             u.setPhoneNumbers(editPhone(scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
                              break;
                          case "adress" :
+                             u.setAddress(editAddress(scanner.nextLine(), scanner.nextInt(), scanner.nextInt(), scanner.nextLine(),
+                                     scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
                              break;
                          case "job" :
+                             u.setJobTitle(editJob(scanner.nextLine()));
                              break;
                          case "company" :
+                             u.setCompany( editCompany(scanner.nextLine(), scanner.nextLine(), scanner.nextInt(),
+                                     scanner.nextInt(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine() ));
                              break;
                          case "favorite" :
+                             u.setFavorite(isFavorite(scanner.hasNextBoolean()));
                              break;
                          default:
                              System.out.println("Invalid input.");
@@ -234,6 +242,7 @@ public class FileIUserService implements IUserService, UserEdit {
     }
 
 
+    // TODO       ---->>     Problemsky !
     // from a LinkedList of Strings we return a LinkedList of Users
     private List<User> userList(List<String> stringList) {
 

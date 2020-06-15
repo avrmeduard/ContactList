@@ -33,12 +33,3 @@ public class Company{
         return this.name + "_" + this.address.toString();
     }
 }
-class AddressCompany {
-
-
-
-    @Override
-    public String toString() {
-        return "";
-    }
-}

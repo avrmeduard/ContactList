@@ -36,8 +36,11 @@ public class Main {
 
         fileUserService.addContact(new User(1,"Noon", "Mitch", "dwayneMitch@msn.com", 22,
                 ph,
-                new Address("15 Washington", 27, 13, "first", "CA 80474", "San Francisco", "United States"),"Web Designer",
-                new Company("Big Drop Inc, Web Design and Developer Company", new Address("Montgomery St", 8, 1, "9th", "CA 94011", "San Francisco", "United States")), false));
+                new Address("15 Washington", 27, 13, "first", "CA 80474", "San Francisco", "United States"),
+                "Web Designer",
+                new Company("Big Drop Inc, Web Design and Developer Company",
+                        new Address("Montgomery St", 8, 1, "9th", "CA 94011", "San Francisco", "United States")),
+                false));
 
 
         HashMap<String, PhoneNumber> pt = new HashMap<>();
@@ -60,7 +63,8 @@ public class Main {
                 new Company("Nails and CO", new Address("Red St", 8, 1, "6th", "DC 11011", "Washington", "United States")), false));    // initialized contacts
 
         // we called getContacts method and print it the result
-        fileUserService.getContacts().forEach(System.out::println);
+//        fileUserService.getContacts().forEach(System.out::println);
+        fileUserService.search("Washington").forEach(System.out::println);
 
         // we called search method
         // fileUserService.search("Michal").stream().map(User::getUserID).forEach(System.out::println);
