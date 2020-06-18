@@ -1,4 +1,3 @@
-
 package ro.jademy.contactlist;
 
 import ro.jademy.contactlist.model.Address;
@@ -6,31 +5,22 @@ import ro.jademy.contactlist.model.Company;
 import ro.jademy.contactlist.model.PhoneNumber;
 import ro.jademy.contactlist.model.User;
 import ro.jademy.contactlist.service.FileIUserService;
+import ro.jademy.contactlist.service.MemoryIUserService;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
-//    private static MemoryIUserService memoryUserService = new MemoryIUserService();
-//    private static FileIUserService fileUserService = new FileIUserService("mobileDataBase.txt");
-
-    private static List<User> contacts = new ArrayList<>();
-    private static Menu menu;
-
-
+    private static MemoryIUserService memoryUserService = new MemoryIUserService();
 
     public static void main(String[] args) {
 
-
         Menu menu = new Menu();
-
-
-
-
-
         FileIUserService fileUserService = new FileIUserService("contactsFile.txt");
+
         HashMap<String, PhoneNumber> ph = new HashMap<>();
         ph.put("home",new PhoneNumber ("07", "676655544"));
 
@@ -61,29 +51,15 @@ public class Main {
                 pt,
                 new Address("136 DC", 47, 13, "second", "DC 80474", "Washington", "United States"),"Fashion Designer",
                 new Company("Nails and CO", new Address("Red St", 8, 1, "6th", "DC 11011", "Washington", "United States")), false));    // initialized contacts
-
-        // we called getContacts method and print it the result
-//        fileUserService.getContacts().forEach(System.out::println);
-        fileUserService.search("Washington").forEach(System.out::println);
-
-        // we called search method
-        // fileUserService.search("Michal").stream().map(User::getUserID).forEach(System.out::println);
-
-
-
-//        System.out.println("People searched whit 'Mit' :");
-//        fileUserService.search("Michal");
-
-
-
-//        menu.startPhone();
-//        menu.printMenu();
-//        menu.printActionMenu(scanner.nextInt());
+        menu.printActionMenu();
     }
-
-
 }
 
+
+/*fileUserService.getContacts().forEach(System.out::println);
+        fileUserService.search("Michal").stream().map(User::getUserID).forEach(System.out::println);
+        System.out.println("People searched whit 'Mit' :");
+        fileUserService.search("Michal");*/
 
 
 

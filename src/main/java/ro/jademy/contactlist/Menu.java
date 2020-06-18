@@ -1,22 +1,30 @@
 package ro.jademy.contactlist;
 
+import static ro.jademy.contactlist.edit.Validate.*;
 import ro.jademy.contactlist.model.User;
+import ro.jademy.contactlist.service.FileIUserService;
 
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class Menu {
 
     private static Scanner scanner = new Scanner(System.in);
     private static List<User> users = new ArrayList<>();
+    FileIUserService fileIUserService = new FileIUserService("contactsFile.txt");
 
-    public int printActionMenu(int action) {
 
+
+    public void printActionMenu() {
+
+        printMenu();
         boolean quit = false;
         while (!quit) {
-            action = scanner.nextInt();
+
+            int action = scanner.nextInt();
             scanner.nextLine();
+
             switch (action) {
                 case 0:
                     System.out.println("Shutting down ...");
@@ -32,94 +40,94 @@ public class Menu {
                     favoriteContacts(users);
                     break;
                 case 4:
+                    editContact();
                     printMenu();
                     break;
+                case 5:
+
             }
         }
-        return action;
+    }
+
+    public void editContact() {
+
+
+        // editezi contact :
+        // gasesti userul dupa user id si il editezi
+
+        System.out.println("Select customer id to edit : ");
+
+        int id = scanner.nextInt();
+        User u = getContactById(id);
+
+        //Optional<User> userOpt = getContactById(userId);
+
+
+        for (User u : contacts) {
+
+            if( u.getUserID() == userId ) {
+
+                switch (scanner.nextLine()) {
+                    case "first name" :
+                        String name = scanner.nextLine();
+                          if(isName(name) ){
+                           u.setFirstName(name); }
+                        break;
+                    case "last name" :
+                        u.setLastName( editName(scanner.nextLine()) );
+                        break;
+                    case "email" :
+                        u.setEmail( editEmail(scanner.nextLine()) );
+                        break;
+                    case "age" :
+                        u.setAge( editAge(scanner.nextInt()) );
+                        break;
+                    case "phone" :
+                        u.setPhoneNumbers(editPhone(scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
+                        break;
+                    case "adress" :
+                        u.setAddress(editAddress(scanner.nextLine(), scanner.nextInt(), scanner.nextInt(), scanner.nextLine(),
+                                scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
+                        break;
+                    case "job" :
+
+                        u.setJobTitle(editJob(scanner.nextLine()));
+                        break;
+                    case "company" :
+                        u.setCompany( editCompany(scanner.nextLine(), scanner.nextLine(), scanner.nextInt(),
+                                scanner.nextInt(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine() ));
+                        break;
+                    case "favorite" :
+                        u.setFavorite(isFavorite(scanner.hasNextBoolean()));
+                        break;
+                    default:
+                        System.out.println("Invalid input.");
+                        // metoda recursiva, se cheama singura
+                        // editContact
+
+
+                }
+            }
+        }
+        // input scanner -> make switch
+
+
+
+
+        System.out.println("Contact not found.");
+
     }
 
     public void printMenu() {
-
         System.out.println("\nAvailable actions:\npress");
         System.out.println("0 - to shutdown\n" +
                 "1 - to print contacts\n" +
                 "2 - to print contacts details\n" +
                 "3 - to print favorite list\n" +
                 "4 - to print a list of available actions.");
-        System.out.println("Choose your actions: ");
+        System.out.println("Choose your actions: "); }
 
-    }
-
-
-
-    /**
-     * Create user list from file.
-     *
-     * @param file the file containing the users
-     * @return a User list
-     */
-
-
-
-
-    private static void writeUserToFile(String s, File file) {
-
-    }
-
-
-//    public static String createUser(String name1, String name2, String phoneNo) throws Exception{
-//        name1 = "";
-//        name2 = "";
-//        phoneNo = "";
-//
-//
-//        System.out.println("Create a new user : \n");
-//
-//        try {
-//
-//            System.out.print("Enter your first name : ");
-//            String firstName = scanner.next();
-//            if (firstName.length() <= 1 || !firstName.matches("^[a-zA-Z]*$")) {
-//                return name1 += firstName;
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Invalid first name, please try one more time. " + e);
-//        }
-//
-//        try {
-//
-//            System.out.print("Enter your last name : ");
-//            String lastName = scanner.next();
-//            if(lastName.length() <= 1 || !lastName.matches("^[a-zA-Z]*$")) {
-//                name2 += lastName;
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Invalid second name, please try one more time. " + e);
-//        }
-//
-//        try {
-//            System.out.print("Enter your no : ");
-//            String phoneNumber = scanner.next();
-//            if (phoneNumber.matches(".*[^0-9].*")) {
-//                phoneNo += phoneNumber;
-//                /*throw new ("Please enter a valid number phone.");*/
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Invalid phone number, please try one more time. " + e);
-//        }
-//
-//        return new User(name1, name2, phoneNo);
-//    }
-
-
-
-
-    public void startPhone() {
-        System.out.println("Starting phone ...");
-    }
-
-
+    public void startPhone() { System.out.println("Starting phone ..."); }
 
     private static void contactsList(List<User> userList) {
         Map<Character, List<User>> naturalOrder = userList.stream().sorted(Comparator.comparing(User::getFirstName).thenComparing(User::getLastName))
@@ -136,7 +144,6 @@ public class Menu {
         System.out.println("Choose your actions: ");
     }
 
-
     private static void contactsDetails(List<User> users) {
         System.out.println("Select an index to print his contact details ");
         int indexContacts = scanner.nextInt();
@@ -144,7 +151,6 @@ public class Menu {
         System.out.println(users.get(indexContacts));
         System.out.println("Choose your actions: ");
     }
-
 
     private static void favoriteContacts(List<User> userList) {
         System.out.println("Favorite contacts : ");

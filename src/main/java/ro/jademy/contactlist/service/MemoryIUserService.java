@@ -26,8 +26,8 @@ public class MemoryIUserService implements IUserService {
     }
 
     @Override
-    public Optional<User> getContactById(int userId) {
-        return contacts.stream().filter(u -> u.getUserID() == userId).findFirst();
+    public User getContactById(int userId) {
+        return contacts.stream().filter(u -> u.getUserID() == userId).findFirst().get();
     }
 
     @Override

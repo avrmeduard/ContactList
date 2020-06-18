@@ -7,17 +7,16 @@ import ro.jademy.contactlist.model.User;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface IUserService {
 
     List<User> getContacts();
 
-    Optional<User> getContactById(int userId);
+    User getContactById(int userId);
 
     void addContact(User contact);
 
-    void editContact(int userID);
+    //void editContact(int userID);
 
     void editContact(int userId, String firstName,
                      String lastName,

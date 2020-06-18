@@ -14,14 +14,16 @@ public class User {
     private String lastName;
     private String email;
     private Integer age;
+    private String jobTitle;
+    private boolean isFavorite;
 
     private Map<String, PhoneNumber> phoneNumbers;
+
     private Address address;
 
-    private String jobTitle;
     private Company company;
 
-    private boolean isFavorite;
+
 
 
 //    public User(String firstName, String lastName, String phoneNumber) {
@@ -84,7 +86,7 @@ public class User {
 
     public void setAge(Integer age) {
         if (age < 0 || age > 105) {
-            throw new IllegalArgumentException(Integer.toString(age));
+            throw new IllegalArgumentException("Age doesn't fit, try again : ");
         }
         this.age = age;
     }

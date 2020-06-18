@@ -1,18 +1,23 @@
 package ro.jademy.contactlist.service;
 
-import ro.jademy.contactlist.model.*;
+import static ro.jademy.contactlist.edit.Validate.*;
+import ro.jademy.contactlist.model.Address;
+import ro.jademy.contactlist.model.Company;
+import ro.jademy.contactlist.model.PhoneNumber;
+import ro.jademy.contactlist.model.User;
+
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class FileIUserService extends EditUserService implements IUserService{
+public class FileIUserService implements IUserService{
 
     private boolean quit;
 
     private Scanner scanner = new Scanner(System.in);
     private File contactsFile;
-    private List <User> contacts = new LinkedList <>();
+    private List <User> contacts = new ArrayList <>();
 
 
     public FileIUserService(File contactsFile) {
@@ -35,10 +40,9 @@ public class FileIUserService extends EditUserService implements IUserService{
     }
 
     @Override
-    public Optional <User> getContactById(int userId) {
+    public User getContactById(int userId) {
 
-
-        return contacts.stream().filter(u -> u.getUserID() == userId).findFirst();
+        return contacts.stream().filter(u -> u.getUserID() == userId).findFirst().get();
     }
 
     @Override
@@ -86,89 +90,29 @@ public class FileIUserService extends EditUserService implements IUserService{
     // TODO select user first by ID and rewrite it !!!
     //  . Use Exeption !!
 
+
+
+
     @Override
     public void editContact(int userId, String firstName, String lastName, String email, Integer age, Map<String,
             PhoneNumber> phoneNumber, Address address, String jobTitle, Company company, boolean isFavorite) {
 
-        Optional<User> userOpt = getContactById(userId);
+        User u = getContactById(userId);
+        // TODO      New User    --->    replace old one !
 
-        // edit the contact only if the user was found
-        if(userOpt.isPresent()) {
-            User user = userOpt.get();
-
-            //TODO
-            // .edit contact and replace it whit the old one
-
-            contacts.remove(user);
-            // TODO: use setters and update the user
-            // overwrite the whole list of contacts in the file
-            writeToFile();
-        }
-    }
-
-    public void editContact(int userId) {
-
-        // editezi contact :
-        // gasesti userul dupa user id si il editezi
-
-         Optional<User> userOpt = getContactById(userId);
-
-         if (userOpt.isPresent()) {
-
-
-
-             for (User u : contacts) {
-
-                 if( u.getUserID() == userId ) {
-
-                     switch (scanner.nextLine()) {
-                         case "first name" :
-                             u.setFirstName( editName(scanner.nextLine()) );
-                             break;
-                         case "last name" :
-                             u.setFirstName( editName(scanner.nextLine()) );
-                             break;
-                         case "email" :
-                             u.setEmail( editEmail(scanner.nextLine()) );
-                             break;
-                         case "age" :
-                             u.setAge( editAge(scanner.nextInt()) );
-                             break;
-                         case "phone" :
-                             u.setPhoneNumbers(editPhone(scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
-                             break;
-                         case "adress" :
-                             u.setAddress(editAddress(scanner.nextLine(), scanner.nextInt(), scanner.nextInt(), scanner.nextLine(),
-                                     scanner.nextLine(), scanner.nextLine(), scanner.nextLine()));
-                             break;
-                         case "job" :
-                             u.setJobTitle(editJob(scanner.nextLine()));
-                             break;
-                         case "company" :
-                             u.setCompany( editCompany(scanner.nextLine(), scanner.nextLine(), scanner.nextInt(),
-                                     scanner.nextInt(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine(), scanner.nextLine() ));
-                             break;
-                         case "favorite" :
-                             u.setFavorite(isFavorite(scanner.hasNextBoolean()));
-                             break;
-                         default:
-                             System.out.println("Invalid input.");
-                             // metoda recursiva, se cheama singura
-                             // editContact
-
-
-                 }
-             }
-         }
-         // input scanner -> make switch
-
-
-
-        }
-
-        System.out.println("Contact not found.");
+        u.setFirstName(firstName);
+        u.setLastName(lastName);
+        u.setEmail(email);
+        u.setAge(age);
+        u.setPhoneNumbers(phoneNumber);
+        u.setAddress(address);
+        u.setJobTitle(jobTitle);
+        u.setCompany(company);
+        u.setFavorite(isFavorite);
 
     }
+
+
 
     @Override
     public void removeContact(int userId) {
@@ -241,7 +185,6 @@ public class FileIUserService extends EditUserService implements IUserService{
         return userInLine;
     }
 
-
     // TODO       ---->>     Problemsky !
     // from a LinkedList of Strings we return a LinkedList of Users
     private List<User> userList(List<String> stringList) {
@@ -298,7 +241,6 @@ public class FileIUserService extends EditUserService implements IUserService{
         }
         return userList;
     }
-
 
 
     // it reads from a file and return a LinkedList of Strings.
